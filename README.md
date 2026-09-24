@@ -1,4 +1,4 @@
-# JMBNR guild website
+# JMBN guild website
 
 Public GitHub Pages guild website with Play typography, gold and black styling, and existing public guild imagery.
 
@@ -8,4 +8,4 @@ Public GitHub Pages guild website with Play typography, gold and black styling, 
 - Join: team expectations and the guild Discord invite.
 - JMBN Manifest: links to the existing member system at https://delumenta.github.io/JMBN/.
 
-The shared navigation uses header.html and header.js. Legacy JMBNR member, login, pending and command pages redirect to JMBN Manifest, so old bookmarks still work. JMBNR does not operate a second sign-in or member dashboard. Supabase was not modified.
+The shared navigation uses header.html and header.js. Legacy member, login, pending and command pages redirect to JMBN Manifest, so old bookmarks still work. The public site does not operate a second sign-in or member dashboard. Supabase was not modified.
