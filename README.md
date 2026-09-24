@@ -1,16 +1,18 @@
 # JMBNR guild website
 
-A standalone, responsive public guild page. The site is plain HTML/CSS/JS and can be hosted from the root of a GitHub Pages repository named `JMBNR`.
+A standalone Star Citizen inspired guild website for GitHub Pages. It uses the Play font, a gold and black palette, and existing public guild imagery from Supabase Storage.
 
-## Publish
+## Pages
 
-1. Create a public GitHub repository named `JMBNR` under `delumenta`.
-2. Upload `index.html` to the repository root.
-3. In **Settings → Pages**, select **Deploy from a branch**, `main`, and `/ (root)`.
-4. Once Pages builds, open `https://delumenta.github.io/JMBNR/`.
+- `index.html`: guild landing page and role selector
+- `academy.html`: training tracks and proposed Mining course
+- `operations.html`: mission formats and empty operations board
+- `member.html`: public preview of a future signed-in member dashboard
+- `command.html`: public preview of a future admin workspace
+- `site.css`: shared styling for the inner pages
 
-## Customize
+The member and command views are **interface previews**. They display no private data and provide no administrative actions. The site does not connect to the Supabase database or change its schema, policies, auth, or storage. The images are referenced from existing public storage objects.
 
-Replace the temporary Academy link in the Join section with your confirmed Discord invite or recruitment flow. The current JMBN logo is loaded from the existing Wix URL; copy an approved asset into this repo and update the image path if you want the site independent of Wix.
+## Next setup
 
-The front page has no login, database connection, member statistics or invented mission data. Add Supabase once you define member roles, access rules and content to manage.
+A verified recruitment contact or Discord invite can replace the placeholder text in `index.html`. A real member/admin system requires authentication, role checks enforced by RLS, and data models approved for this separate website.
