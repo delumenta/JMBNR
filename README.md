@@ -5,7 +5,8 @@ A standalone GitHub Pages website using Play, gold and black, and existing **pub
 ## Site path
 
 - `index.html` — guild introduction and three clear choices
-- `academy.html` — training pathways and a proposed Mining course
+- `activities.html` — guild activities including mining, flight, ground play, and exploration
+- `academy.html` — redirect for old Academy links
 - `operations.html` — public operation formats and upcoming events
 - `join.html` — first-step introduction composer; copies text, does not submit an application
 - `login.html` — sign in with an existing JMBN username/password
