@@ -1,25 +1,23 @@
 # JMBNR guild website
 
-A standalone Star Citizen inspired guild website for GitHub Pages. It uses the Play font, a gold and black palette, and existing public guild imagery from Supabase Storage.
+A standalone GitHub Pages website using Play, gold and black, and existing **public** guild imagery in Supabase Storage.
 
-## Pages
+## Site path
 
-- `index.html`: guild landing page and role selector
-- `academy.html`: training tracks and proposed Mining course
-- `operations.html`: mission formats and empty operations board
-- `member.html`: public preview of a future signed-in member dashboard
-- `command.html`: public preview of a future admin workspace
-- `site.css`: shared styling for the inner pages
+- `index.html` — guild introduction and three clear choices
+- `academy.html` — training pathways and a proposed Mining course
+- `operations.html` — public operation formats and upcoming events
+- `join.html` — first-step introduction composer; copies text, does not submit an application
+- `login.html` — sign in with an existing JMBN username/password
+- `member.html` — authenticated member home, reading only the signed-in user's profile and certifications
+- `pending.html` — signed-in guest/pending account message
 
-The member and command views are **interface previews**. They display no private data and provide no administrative actions. The site does not connect to the Supabase database or change its schema, policies, auth, or storage. The images are referenced from existing public storage objects.
+The Member page requires a valid existing Supabase session and a non-Guest profile. It uses only SELECT requests. Database changes, auth settings, storage, and policies were **not changed** for this site. The `command.html` file is an unlinked interface concept with no admin functions.
 
-## Next setup
+## Operations publishing
 
-A verified recruitment contact or Discord invite can replace the placeholder text in `index.html`. A real member/admin system requires authentication, role checks enforced by RLS, and data models approved for this separate website.
+`events.json` is a public static list, initially empty. Add confirmed events with an ISO timestamp in `start`, `title`, optional `description`, and optional HTTPS `url`. `events.js` displays future events in Singapore time on Operations and Member.
 
-## Community flow
+## Auth note
 
-- `join.html`: browser-only introduction composer. It copies a message for a recruiter; it does not submit an application.
-- `events.json`: public operations board data. Empty until a real event is confirmed; each event should have an ISO `start`, `title`, optional `description`, and optional HTTPS `url`.
-- `events.js`: renders upcoming events in Operations and Member, in Singapore time.
-- Member's selected next path is saved only in that browser's localStorage.
+Existing username/password guild accounts can sign in to JMBNR. Discord OAuth requires the JMBNR callback URL to be allowlisted in Supabase Auth, so it is not offered until that setup is approved. The project uses the public anon key and existing RLS policies. It does not include a service-role key. Actual access must be enforced by the existing database policies as well as the browser UI.
