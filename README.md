@@ -16,3 +16,10 @@ The member and command views are **interface previews**. They display no private
 ## Next setup
 
 A verified recruitment contact or Discord invite can replace the placeholder text in `index.html`. A real member/admin system requires authentication, role checks enforced by RLS, and data models approved for this separate website.
+
+## Community flow
+
+- `join.html`: browser-only introduction composer. It copies a message for a recruiter; it does not submit an application.
+- `events.json`: public operations board data. Empty until a real event is confirmed; each event should have an ISO `start`, `title`, optional `description`, and optional HTTPS `url`.
+- `events.js`: renders upcoming events in Operations and Member, in Singapore time.
+- Member's selected next path is saved only in that browser's localStorage.
