@@ -9,7 +9,7 @@ A standalone GitHub Pages website using Play, gold and black, and existing **pub
 - `academy.html` — redirect for old Academy links
 - `careers.html` — flexible career paths and the team growth philosophy
 - `operations.html` — redirect for old Operations links
-- `join.html` — first-step introduction composer; copies text, does not submit an application
+- `join.html` — team expectations and a direct link to the official guild Discord invite
 - `login.html` — sign in with an existing JMBN username/password
 - `member.html` — authenticated member home, reading only the signed-in user's profile and certifications
 - `pending.html` — signed-in guest/pending account message
