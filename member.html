@@ -1,3 +1,69 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My crew record · JMBNR</title><link rel="stylesheet" href="site.css"><style>body:not(.ready) main{visibility:hidden}.member-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}.sign-out{background:transparent;border:1px solid var(--line);color:var(--bright);padding:11px 15px}.cert-list{display:flex;flex-wrap:wrap;gap:10px}.cert-list span{border:1px solid var(--line);color:var(--bright);padding:11px 14px;font-size:12px}.member-section{border-top:1px solid var(--line);margin-top:55px;padding-top:42px}.record-value{font-size:clamp(30px,4vw,52px);color:var(--bright);margin:22px 0 7px;line-height:1}.loading{min-height:70vh;display:grid;place-items:center;color:var(--gold)}</style><link rel="stylesheet" href="header.css"><script src="header.js" defer></script></head><body><div id="site-header"></div><div class="loading" id="loading">Opening your member record…</div><main><section class="section wrap"><div class="member-heading"><div><div class="label">Signed-in member area</div><h1 id="greeting" style="font-size:clamp(40px,6vw,74px);letter-spacing:-.06em;margin:12px 0">Your crew record.</h1><p id="account-role" class="copy">Your JMBN guild account</p></div><button class="sign-out" id="sign-out" type="button">Sign out ↗</button></div><div id="member-error" role="status"></div><div class="grid" style="margin-top:36px"><article class="box"><b>CURRENT RANK</b><div class="record-value" id="rank">—</div><p>Rank on your guild profile.</p></article><article class="box"><b>MISSIONS ATTENDED</b><div class="record-value" id="missions">—</div><p>Attendance recorded on your guild profile.</p></article><article class="box"><b>CERTIFICATIONS</b><div class="record-value" id="cert-count">—</div><p>Qualifications awarded to your account.</p></article></div><section class="member-section"><div class="label">Your qualifications</div><h2>Certifications</h2><div class="cert-list" id="certifications"></div></section><section class="member-section"><div class="label">Guild activity</div><h2>Explore career paths</h2><div class="empty">There are many ways to contribute: flight, ground, industry, rescue, exploration and team coordination.</div><p class="copy"><a href="careers.html" style="color:var(--bright)">Explore Career Paths ↗</a></p></section></section></main><footer class="footer"><div class="wrap"><span>© JMBNR · Member area</span><a href="index.html">Return home ↑</a></div></footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="auth.js"></script><script>
-(async()=>{const status=document.getElementById('member-error');try{const user=await guildUser();if(!user){location.replace('login.html');return}const {data:profile,error:pe}=await guildAuth.from('profiles').select('display_name,handle,role,rank_code,missions_attended').eq('user_id',user.id).maybeSingle();if(pe)throw pe;if(!profile||String(profile.role||'Guest').trim().toLowerCase()==='guest'){location.replace('pending.html');return}document.getElementById('greeting').textContent=profile.display_name||profile.handle||'Your crew record';document.getElementById('account-role').textContent=profile.role||'Member';document.getElementById('rank').textContent=profile.rank_code||'Pending';document.getElementById('missions').textContent=Number.isFinite(Number(profile.missions_attended))?String(profile.missions_attended):'—';const {data:certs,error:ce}=await guildAuth.from('user_certifications').select('certification_code').eq('user_id',user.id);if(ce)throw ce;const codes=[...new Set((certs||[]).map(c=>c.certification_code).filter(Boolean))];document.getElementById('cert-count').textContent=String(codes.length);const list=document.getElementById('certifications');if(!codes.length)list.textContent='No certifications recorded yet.';else codes.forEach(code=>{const item=document.createElement('span');item.textContent=code;list.append(item)});document.getElementById('loading').remove();document.body.classList.add('ready')}catch(e){document.getElementById('loading').remove();document.body.classList.add('ready');status.className='note';status.textContent='Your member record could not be loaded. Please try again later.'}})();document.getElementById('sign-out').addEventListener('click',async()=>{await guildAuth.auth.signOut();location.replace('login.html')});
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Crew · JMBNR</title>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="header.css">
+<script src="header.js" defer></script>
+<style>
+body:not(.ready) main{visibility:hidden}
+.member-hero{position:relative;isolation:isolate;overflow:hidden;background:#171812;padding:clamp(55px,7vw,100px) 0}
+.member-hero:before{content:"";position:absolute;z-index:-2;inset:0;background:url('https://fcegavhipeaeihxegsnw.supabase.co/storage/v1/object/public/frontpage/Grow123.png') center/cover}
+.member-hero:after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,#090908f5,#090908d5 50%,#09090868),linear-gradient(0deg,#090908,transparent 45%)}
+.member-hero h1{font-size:clamp(45px,7vw,92px);letter-spacing:-.065em;line-height:.98;margin:15px 0}
+.member-hero p{color:#d7d4c9;max-width:600px;line-height:1.7}
+.member-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.65fr);gap:22px;align-items:start}
+.member-card{border:1px solid var(--line);background:var(--panel);padding:clamp(23px,3vw,38px)}
+.member-card h2{font-size:clamp(29px,3.5vw,45px);text-transform:uppercase;letter-spacing:-.05em;line-height:1.05;margin:14px 0}
+.member-card p{color:var(--muted);line-height:1.7;font-size:14px}
+.member-card .btn{margin-top:12px}
+.member-side{display:grid;gap:16px}
+.member-eyebrow{font-size:11px;color:var(--gold);letter-spacing:.17em;text-transform:uppercase;font-weight:700}
+.member-section{padding-block:55px;border-bottom:1px solid var(--line)}
+.member-section h2{font-size:clamp(30px,4vw,53px);text-transform:uppercase;letter-spacing:-.05em;margin:13px 0 24px}
+.interests{display:flex;flex-wrap:wrap;gap:10px}
+.interest{background:#13140f;border:1px solid var(--line);color:var(--white);padding:12px 15px;font-size:13px}
+.interest[aria-pressed=true]{background:#d7ad6225;border-color:var(--gold);color:var(--bright)}
+.record{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.record .box{min-height:175px}.record-value{font-size:clamp(32px,4vw,52px);color:var(--bright);font-weight:700;line-height:1;margin:24px 0 8px}
+.certs{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.certs span{border:1px solid var(--line);padding:10px 13px;color:var(--bright);font-size:12px}
+.account-actions{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin:45px 0 0}.sign-out{background:transparent;border:1px solid var(--line);color:var(--bright);padding:10px 14px;font-size:12px}
+.loading{min-height:70vh;display:grid;place-items:center;color:var(--gold)}
+@media(max-width:800px){.member-layout{grid-template-columns:1fr}.member-side{grid-template-columns:1fr 1fr}.record{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.member-side,.record{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<div class="loading" id="loading">Opening your crew space…</div>
+<main>
+<section class="member-hero"><div class="wrap"><div class="label">JMBNR / Your crew space</div><h1 id="greeting">Welcome aboard.</h1><p>Find your next crew, explore a role and see what you've built together.</p></div></section>
+<div class="wrap">
+<section class="member-section" style="border-bottom:0;padding-bottom:30px">
+  <div class="member-layout">
+    <div class="member-card"><div class="member-eyebrow">Start here</div><h2>What will you do with the crew next?</h2><p>Join the guild conversation to find a group, ask about an activity or arrange your next session.</p><a class="btn" href="https://discord.gg/4z49bCXv5B" target="_blank" rel="noopener noreferrer">Open guild Discord ↗</a></div>
+    <div class="member-side">
+      <div class="member-card"><div class="member-eyebrow">Explore</div><h2>Career paths</h2><p>Flight, ground, industry, rescue, exploration or coordination.</p><a href="careers.html" style="color:var(--bright);font-size:12px">Find your path ↗</a></div>
+      <div class="member-card"><div class="member-eyebrow">Play together</div><h2>Activities</h2><p>Find something the crew can do together.</p><a href="activities.html" style="color:var(--bright);font-size:12px">Explore activities ↗</a></div>
+    </div>
+  </div>
+</section>
+<section class="member-section"><div class="label">Make it yours</div><h2>What interests you?</h2><p class="copy">Choose one or more paths to keep them handy. Your choices are saved only in this browser.</p><div class="interests" id="interests" aria-label="Career interests"><button type="button" class="interest" data-interest="Flight" aria-pressed="false">Flight</button><button type="button" class="interest" data-interest="Ground" aria-pressed="false">Ground</button><button type="button" class="interest" data-interest="Industry" aria-pressed="false">Industry</button><button type="button" class="interest" data-interest="Rescue" aria-pressed="false">Rescue</button><button type="button" class="interest" data-interest="Exploration" aria-pressed="false">Exploration</button><button type="button" class="interest" data-interest="Coordination" aria-pressed="false">Coordination</button></div></section>
+<section class="member-section"><div class="label">Your guild record</div><h2>Your progress</h2><div id="member-error" role="status"></div><div class="record"><article class="box"><b>CURRENT RANK</b><div class="record-value" id="rank">—</div><p>On your guild profile.</p></article><article class="box"><b>MISSIONS ATTENDED</b><div class="record-value" id="missions">—</div><p>Recorded missions together.</p></article><article class="box"><b>CERTIFICATIONS</b><div class="record-value" id="cert-count">—</div><p>Awarded to your account.</p></article></div><div class="certs" id="certifications"></div></section>
+<section class="member-section"><div class="label">Next on the calendar</div><h2>Upcoming events</h2><div id="events-list"><div class="empty">No upcoming event has been posted here. Check the guild Discord to see what the crew is planning.</div></div></section>
+<div class="account-actions"><span class="copy" id="account-role">Signed in to your guild account.</span><button class="sign-out" id="sign-out" type="button">Sign out ↗</button></div>
+</div>
+</main>
+<footer class="footer"><div class="wrap"><span>© JMBNR · My crew</span><a href="index.html">Return home ↑</a></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<script src="events.js" defer></script>
+<script>
+(function(){const box=document.getElementById('interests');const allowed=[...box.querySelectorAll('button')].map(x=>x.dataset.interest);let saved=[];try{const raw=JSON.parse(localStorage.getItem('jmbnr-career-interests')||'[]');if(Array.isArray(raw))saved=raw.filter(x=>allowed.includes(x))}catch{}box.querySelectorAll('button').forEach(button=>{button.setAttribute('aria-pressed',String(saved.includes(button.dataset.interest)));button.addEventListener('click',()=>{const selected=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(selected));try{localStorage.setItem('jmbnr-career-interests',JSON.stringify([...box.querySelectorAll('button[aria-pressed="true"]')].map(x=>x.dataset.interest)))}catch{}})})})();
+(async()=>{const status=document.getElementById('member-error');try{const user=await guildUser();if(!user){location.replace('login.html');return}const {data:profile,error:pe}=await guildAuth.from('profiles').select('display_name,handle,role,rank_code,missions_attended').eq('user_id',user.id).maybeSingle();if(pe)throw pe;if(!profile||String(profile.role||'Guest').trim().toLowerCase()==='guest'){location.replace('pending.html');return}document.getElementById('greeting').textContent=`Welcome, ${profile.display_name||profile.handle||'crew member'}.`;document.getElementById('account-role').textContent=`Signed in as ${profile.role||'Member'}.`;document.getElementById('rank').textContent=profile.rank_code||'Pending';document.getElementById('missions').textContent=profile.missions_attended==null?'—':String(profile.missions_attended);const {data:certs,error:ce}=await guildAuth.from('user_certifications').select('certification_code').eq('user_id',user.id);if(ce)throw ce;const codes=[...new Set((certs||[]).map(c=>c.certification_code).filter(Boolean))];document.getElementById('cert-count').textContent=String(codes.length);const list=document.getElementById('certifications');if(!codes.length)list.textContent='No certifications recorded yet.';else codes.forEach(code=>{const item=document.createElement('span');item.textContent=code;list.append(item)});document.getElementById('loading').remove();document.body.classList.add('ready')}catch(e){document.getElementById('loading').remove();document.body.classList.add('ready');status.className='note';status.textContent='Your member record could not be loaded. Please try again later.'}})();
+document.getElementById('sign-out').addEventListener('click',async()=>{await guildAuth.auth.signOut();location.replace('login.html')});
+</script>
+</body>
+</html>
