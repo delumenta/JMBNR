@@ -22,3 +22,7 @@ The Member page requires a valid existing Supabase session and a non-Guest profi
 ## Auth note
 
 Existing username/password guild accounts can sign in to JMBNR. Discord OAuth requires the JMBNR callback URL to be allowlisted in Supabase Auth, so it is not offered until that setup is approved. The project uses the public anon key and existing RLS policies. It does not include a service-role key. Actual access must be enforced by the existing database policies as well as the browser UI.
+
+## Shared navigation
+
+Every site page loads `header.html` through `header.js` and styles it with `header.css`. Edit the links once in `header.html`. The old `academy.html` route only redirects to Activities.
