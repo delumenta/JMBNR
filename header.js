@@ -16,6 +16,6 @@
     });
     nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('open');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','Open menu')}});
   }catch(error){
-    mount.innerHTML='<nav class="global-header global-fallback" aria-label="Main navigation"><a href="index.html">JMBN</a><a href="activities.html">Activities</a><a href="careers.html">Career Paths</a><a href="join.html">Join</a><a href="https://delumenta.github.io/JMBN/">JMBN Manifest</a></nav>';
+    mount.innerHTML='<nav class="global-header global-fallback" aria-label="Main navigation"><a href="index.html">JMBN</a><a href="activities.html">Activities</a><a href="careers.html">Career Paths</a><a href="join.html">Join</a><a href="https://delumenta.github.io/JMBN/">Member login</a></nav>';
   }
 })();
